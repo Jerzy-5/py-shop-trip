@@ -30,8 +30,13 @@ class Customer:
 
     def buy_cost(self, shop: type) -> float:
         cost = 0
-        for keys, values in shop.products_available.items():
-            cost += shop.products_available[keys] * self.wanted_products[keys]
+
+        for product, amount in self.wanted_products.items():
+            price = shop.products_available.get(product)
+
+            if price is not None:
+                cost += amount * price
+
         return cost
 
     def trip_cost(self, shop: type, fuel_price: float) -> float:
@@ -58,17 +63,21 @@ class Customer:
         return cheapest_shop
 
     def buy_at_shop(self, shop: type) -> None:
-        product_cart = self.wanted_products
-        shop_cart = shop.products_available
-        what = [k for k, v in product_cart.items()]
-        amount = [v for k, v in product_cart.items()]
-        price = [v for k, v in shop_cart.items()]
         final = 0
-        for number in range(len(what)):
-            result = amount[number] * price[number]
+
+        for product, amount in self.wanted_products.items():
+            price = shop.products_available.get(product)
+
+            if price is None:
+                continue
+
+            result = amount * price
+
             if result.is_integer():
                 result = int(result)
-            print(f"{amount[number]} {what[number]}s for {result} dollars")
-            final += amount[number] * price[number]
+
+            print(f"{amount} {product}s for {result} dollars")
+            final += result
+
         print(f"Total cost is {final} dollars")
         print("See you again!")

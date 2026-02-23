@@ -51,5 +51,5 @@ def shop_trip() -> None:
         print(f"{customer.name} rides home")
         customer.location = original_location
         customer.money -= customer.trip_cost(cheapest_shop, fuel)
-        print(f"{customer.name} now has {customer.money} dollars")
+        print(f"{customer.name} now has {round(customer.money, 2)} dollars")
         print("")
